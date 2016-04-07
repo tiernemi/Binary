@@ -92,9 +92,18 @@ int bst_size(bst *my_tree) {
  * Return 1 for sucessful search, 0 for failure.
  */
 int bst_search_recursive(struct bstnode_s *node, int data) {
-	// FIXME
+	if (node != NULL) {
+		if (data > node->data) {
+			bst_search_recursive(node->right,data) ; // Go right
+		} else if (data < node->data) {
+			bst_search_recursive(node->left,data) ; // Go left
+		} else {
+			return 1 ; // Found the value
+		}
+	} else {
+		return 0 ;
+	}
 }
-
 
 /*
  ******************************************************************************
@@ -122,9 +131,11 @@ int bst_search(bst *my_tree, int data) {
 int bst_insert_recursive(struct bstnode_s *node, int data) {
 	if (node != NULL) {
 		if (data > node->data) {
-			bst_insert_recursive(node,data) ;
+			bst_insert_recursive(node->right,data) ; // Go right
+		} else if (data < node->data) {
+			bst_insert_recursive(node->left,data) ; // Go left
 		} else {
-			bst_insert_recursive(node,data) ;
+			return 0 ; // Duplicates
 		}
 	} else {
 		if (! (node = (struct bstnode_s *) malloc(sizeof(struct bstnode_s)))) {
@@ -133,6 +144,7 @@ int bst_insert_recursive(struct bstnode_s *node, int data) {
 			node->data = data ;
 			node->left = NULL ;
 			node->right = NULL ;
+			return 1 ;
 		}
 	}
 }
