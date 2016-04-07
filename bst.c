@@ -81,6 +81,7 @@ void bst_destroy(bst *my_tree) {
  * Return the current size.
  ******************************************************************************
  */
+
 int bst_size(bst *my_tree) {
 	return my_tree->size;
 }
@@ -91,17 +92,23 @@ int bst_size(bst *my_tree) {
  * Perform the search recursively - binary search.
  * Return 1 for sucessful search, 0 for failure.
  */
+
 int bst_search_recursive(struct bstnode_s *node, int data) {
-	if (node != NULL) {
-		if (data > node->data) {
-			bst_search_recursive(node->right,data) ; // Go right
-		} else if (data < node->data) {
-			bst_search_recursive(node->left,data) ; // Go left
+	if (data > node->data) {
+		if (node->right != NULL) {
+			return bst_search_recursive(node->right,data) ; // Go right
+		}
+		else {
+			return 0 ;
+		}
+	} else if (data < node->data) {
+		if (node->left != NULL) {
+			return bst_search_recursive(node->left,data) ; // Go left
 		} else {
-			return 1 ; // Found the value
+			return 0 ;
 		}
 	} else {
-		return 0 ;
+		return 1 ; // Found the value
 	}
 }
 
@@ -113,6 +120,7 @@ int bst_search_recursive(struct bstnode_s *node, int data) {
  * Return 1 for sucessful search, 0 for failure.
  ******************************************************************************
  */
+
 int bst_search(bst *my_tree, int data) {
 	if (my_tree->root == NULL) {
 		return 0;	// empty tree - return false
@@ -121,31 +129,42 @@ int bst_search(bst *my_tree, int data) {
 	}
 }
 
-
 /*
  * Helper function:
  * Recursive insert.
  * Do not insert duplicate values.
  * Return 1 for sucessful insert, 0 for failure.
  */
+
 int bst_insert_recursive(struct bstnode_s *node, int data) {
-	if (node != NULL) {
-		if (data > node->data) {
-			bst_insert_recursive(node->right,data) ; // Go right
-		} else if (data < node->data) {
-			bst_insert_recursive(node->left,data) ; // Go left
+	if (data > node->data) {
+		if (node->right != NULL) { 
+			return bst_insert_recursive(node->right,data) ; // Go right
 		} else {
-			return 0 ; // Duplicates
+			if (! (node->right = (struct bstnode_s *) malloc(sizeof(struct bstnode_s)))) {
+				return 0 ;
+			} else {
+				node->right->data = data ;
+				node->right->left = NULL ;
+				node->right->right = NULL ;
+				return 1 ;
+			}
+		}
+	} else if (data < node->data) {
+		if (node->left != NULL) { 
+			return bst_insert_recursive(node->right,data) ; // Go right
+		} else {
+			if (! (node->left = (struct bstnode_s *) malloc(sizeof(struct bstnode_s)))) {
+				return 0 ;
+			} else {
+				node->left->data = data ;
+				node->left->left = NULL ;
+				node->left->right = NULL ;
+				return 1 ;
+			}
 		}
 	} else {
-		if (! (node = (struct bstnode_s *) malloc(sizeof(struct bstnode_s)))) {
-			return 0 ;
-		} else {
-			node->data = data ;
-			node->left = NULL ;
-			node->right = NULL ;
-			return 1 ;
-		}
+		return 0 ; // Duplicates
 	}
 }
 
@@ -232,7 +251,6 @@ void bst_inorder_tostring(bst *my_tree, char *str) {
 	}
 }
 
-
 /*
  * Helper function:
  * Traverse the tree pre-order (root, left, right).
@@ -240,6 +258,7 @@ void bst_inorder_tostring(bst *my_tree, char *str) {
  * Assumes that the string has been allocated and has enough
  * space to hold all the values.
  */
+
 void bst_preorder_tostring_recursive(struct bstnode_s *node, char *str) {
 	char buf[10];
 
@@ -304,7 +323,80 @@ void bst_display(bst *my_tree) {
 	free(str);
 }
 
-
-/*
- * vim:ts=4:sw=4
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  bst_find_min_recur
+ *    Arguments:  
+ *      Returns:  
+ *  Description:  
+ * =====================================================================================
  */
+
+int bst_find_min_recur(struct bstnode_s * node) {
+	if (node->left != NULL) {
+		return bst_find_min_recur(node->left) ;
+	} else {
+		return node->data ;
+	}
+}		/* -----  end of function bst_find_min_recur  ----- */
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  bst_find_min
+ *    Arguments:  bst * tree - The tree of which we're finding the minimum.
+ *      Returns:  Minimum value present in binary tree. Default return value of 0.
+ *  Description:  Finds the minimum value present in the tree.
+ * =====================================================================================
+ */
+
+int bst_find_min(bst * tree) {
+	if (tree == NULL) {
+		return 0 ;
+	} else {
+		if (tree->root == NULL) {
+			return 0 ;
+		} else {
+			return bst_find_min_recur(tree->root) ;
+		}
+	}
+}		/* -----  end of function bst_find_min  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  bst_find_max_recur
+ *    Arguments:  
+ *      Returns:  
+ *  Description:  
+ * =====================================================================================
+ */
+
+int bst_find_max_recur(struct bstnode_s * node) {
+	if (node->right != NULL) {
+		return bst_find_max_recur(node->right) ;
+	} else {
+		return node->data ;
+	}
+}		/* -----  end of function bst_find_max_recur  ----- */
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  bst_find_max
+ *    Arguments:  bst * tree - The tree of which we're finding the maximum.
+ *      Returns:  Minimum value present in binary tree. Default return value of 0.
+ *  Description:  Finds the maximum value present in the tree.
+ * =====================================================================================
+ */
+
+int bst_find_max(bst * tree) {
+	if (tree == NULL) {
+		return 0 ;
+	} else {
+		if (tree->root == NULL) {
+			return 0 ;
+		} else {
+			return bst_find_max_recur(tree->root) ;
+		}
+	}
+}		/* -----  end of function bst_find_max  ----- */
+
+
+
+

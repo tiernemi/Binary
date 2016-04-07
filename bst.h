@@ -16,19 +16,18 @@ typedef struct bst_s {
 } bst;
 
 
-
 bst *bst_create();
 void bst_destroy(bst *my_tree);
-
 int bst_insert(bst *my_tree, int data);
-
 int bst_search(bst *my_tree, int data);
 int bst_size(bst *my_tree);
-
 void bst_display(bst *my_tree);
-
 void bst_inorder_tostring(bst *my_tree, char *str);
 void bst_preorder_tostring(bst *my_tree, char *str);
+int bst_find_min(bst * my_tree) ;
+int bst_find_max(bst * my_tree) ;
+int bst_remove(bst * my_tree) ;
+
 
 #endif
 
