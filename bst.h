@@ -26,8 +26,7 @@ void bst_inorder_tostring(bst *my_tree, char *str);
 void bst_preorder_tostring(bst *my_tree, char *str);
 int bst_find_min(bst * my_tree) ;
 int bst_find_max(bst * my_tree) ;
-int bst_remove(bst * my_tree) ;
-
+int bst_remove(bst * my_tree, int data) ;
 
 #endif
 

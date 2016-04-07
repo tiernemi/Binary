@@ -397,6 +397,101 @@ int bst_find_max(bst * tree) {
 	}
 }		/* -----  end of function bst_find_max  ----- */
 
+enum {
+	FAILURE,
+	SUCCESS,
+	NO_CHILDREN,
+	ONE_CHILD,
+} ;
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  bst_remove_recur
+ *    Arguments:  
+ *      Returns:  
+ *  Description:  
+ * =====================================================================================
+ */
+
+int bst_remove_recur(struct bstnode_s * node, int data) {
+	if (data > node->data) {
+		if (node->right != NULL) {
+			int returnState = bst_remove_recur(node->right,data) ;
+			if (returnState == NO_CHILDREN) {
+				free(node->right) ;
+				node->right = NULL ;
+				return SUCCESS ;
+			} else if (returnState == ONE_CHILD) {
+				struct bstnode_s * temp = node->right ;
+				node->right = node->right->right ;
+				free(temp) ;
+			} 
+			return returnState ;
+		}
+		else {
+			return FAILURE ;
+		}
+	} else if (data < node->data) {
+		if (node->left != NULL) {
+			int returnState = bst_remove_recur(node->left,data) ;
+			if (returnState == NO_CHILDREN) {
+				free(node->left) ;
+				node->left = NULL ;
+				return SUCCESS ;
+			} else if (returnState == ONE_CHILD) {
+				struct bstnode_s * temp = node->left ;
+				node->left = node->left->left ;
+				free(temp) ;
+			} 
+			return returnState ;
+		}
+		else {
+			return FAILURE ;
+		}
+	} else {
+		if (node->left == NULL) {
+			if (node->right == NULL) {
+				return NO_CHILDREN ;
+			} else {
+				return ONE_CHILD ;
+			}
+		} else if (node->right == NULL) {
+			if (node->left == NULL) {
+				return NO_CHILDREN ;
+			} else {
+				return ONE_CHILD ;
+			}
+		} else {
+			int newVal = bst_find_min_recur(node) ;
+			node->data = newVal ;
+			bst_remove_recur(node->right, newVal) ;
+			return SUCCESS ;
+		}
+	}
+}		/* -----  end of function bst_remove_recur  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  bst_remove
+ *    Arguments:  bst * tree - The tree from which we're removing the data.
+ *                int data - Data to remove.
+ *      Returns:  1 if sucessful, 0 otherwise
+ *  Description:  Traverses the binary tree and removes the node containing data, the
+ *                function then reconfigures the tree such that it still fulfills the
+ *                criteria for being a bst.
+ * =====================================================================================
+ */
+
+int bst_remove(bst * tree, int data) {
+	if (tree != NULL) {
+		if (tree->root != NULL) {
+			return bst_remove_recur(tree->root, data) ;
+		} else {
+			return 0 ;
+		}
+	} else {
+		return 0 ;
+	}
+}		/* -----  end of function bst_remove  ----- */
 
 
