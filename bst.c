@@ -426,7 +426,11 @@ int bst_remove_recur(struct bstnode_s * node, int data) {
 				return SUCCESS ;
 			} else if (returnState == ONE_CHILD) {
 				struct bstnode_s * temp = node->right ;
-				node->right = node->right->right ;
+				if (temp->right != NULL) {
+					node->right = temp->right ;
+				} else {
+					node->right = temp->left ;
+				}
 				free(temp) ;
 				return SUCCESS ;
 			} 
@@ -444,7 +448,11 @@ int bst_remove_recur(struct bstnode_s * node, int data) {
 				return SUCCESS ;
 			} else if (returnState == ONE_CHILD) {
 				struct bstnode_s * temp = node->left ;
-				node->left = node->left->left ;
+				if (temp->right != NULL) {
+					node->left = temp->right ;
+				} else {
+					node->left = temp->left ;
+				}
 				free(temp) ;
 				return SUCCESS ;
 			} 
@@ -465,7 +473,10 @@ int bst_remove_recur(struct bstnode_s * node, int data) {
 		} else {
 			int newVal = bst_find_min_recur(node->right) ;
 			node->data = newVal ;
-			bst_remove_recur(node->right, newVal) ;
+			if (bst_remove_recur(node->right, newVal) == NO_CHILDREN) {
+				free(node->right) ;
+				node->right = NULL ;
+			}
 			return SUCCESS ;
 		}
 	}

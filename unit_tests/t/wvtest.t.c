@@ -33,6 +33,38 @@ WVTEST_MAIN("binary search tree tests - Testing remove functionality")
 	WVPASSEQ(bst_remove(my_tree, 1),1) ;
 	WVPASSEQ(bst_search(my_tree,1),0) ;
 
+	WVPASSEQ(bst_remove(my_tree, 1),0) ;
+	bst_insert(my_tree, 7);
+	bst_insert(my_tree, 2);
+	bst_insert(my_tree, 11);
+	// Test double child root removal. //
+	WVPASSEQ(bst_remove(my_tree, 7),1) ;
+	bst_insert(my_tree, 5);
+	bst_insert(my_tree, 4);
+	bst_insert(my_tree, 10);
+	bst_insert(my_tree, 7);
+	bst_insert(my_tree, 8);
+	// Test single child removal. //
+	WVPASSEQ(bst_remove(my_tree, 10),1) ;
+	WVPASSEQ(bst_remove(my_tree, 8),1) ;
+	// Test double child removal //
+	WVPASSEQ(bst_remove(my_tree, 5),1) ;
+	WVPASSEQ(bst_remove(my_tree, 7),1) ;
+
+	bst_destroy(my_tree);
+	my_tree = bst_create() ;
+
+	// Test a lot of removals //
+	int i = 0 ;
+	for (i = -100 ; i < 600 ; ++i) {
+		bst_insert(my_tree, i) ; 
+	}
+	for (i = 300 ; i < 500 ; ++i) {
+		WVPASSEQ(bst_remove(my_tree,i),1) ;
+	}
+
+
+
 	bst_destroy(my_tree);
 }
 

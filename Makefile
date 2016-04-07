@@ -27,6 +27,9 @@ clean:
 test: $(target)
 	./$(target) -n 1000
 
+graph: $(target)
+	echo "load \"plot.gnu\"" | gnuplot -persist
+
 unit_tests: $(target).o
 	make -C unit_tests test
 
