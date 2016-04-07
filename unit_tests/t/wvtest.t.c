@@ -9,6 +9,92 @@
 #define N_TESTS 10000
 #define SEED 97
 
+WVTEST_MAIN("binary search tree tests - Testing remove functionality")
+{
+	bst *my_tree = NULL;
+	my_tree = bst_create();
+	bst_insert(my_tree, 7);
+	bst_insert(my_tree, 2);
+	bst_insert(my_tree, 11);
+	bst_insert(my_tree, 9);
+	bst_insert(my_tree, 1);
+
+	// Test removal of all elements.
+	WVPASSEQ(bst_remove(my_tree, 7),1) ;
+	WVPASSEQ(bst_search(my_tree,7),0) ;
+	WVPASSEQ(bst_remove(my_tree, 2),1) ;
+	WVPASSEQ(bst_search(my_tree,2),0) ;
+	WVPASSEQ(bst_remove(my_tree,11),1) ;
+	WVPASSEQ(bst_search(my_tree,11),0) ;
+	WVPASSEQ(my_tree->size,2) ;
+	WVPASSEQ(my_tree->root->left->data,1) ;
+	WVPASSEQ(bst_remove(my_tree, 9),1) ;
+	WVPASSEQ(bst_search(my_tree,9),0) ;
+	WVPASSEQ(bst_remove(my_tree, 1),1) ;
+	WVPASSEQ(bst_search(my_tree,1),0) ;
+
+	bst_destroy(my_tree);
+}
+
+WVTEST_MAIN("binary search tree tests - Finding the min")
+{
+	bst *my_tree = NULL;
+	my_tree = bst_create();
+	bst_insert(my_tree, 7);
+	bst_insert(my_tree, 2);
+	bst_insert(my_tree, 11);
+	bst_insert(my_tree, 9);
+	bst_insert(my_tree, 1);
+	WVPASSEQ(bst_find_min(my_tree),1) ;
+
+	bst_insert(my_tree, -5);
+	bst_insert(my_tree, 1000);
+	bst_insert(my_tree, 10);
+	bst_insert(my_tree, -150);
+	WVPASSEQ(bst_find_min(my_tree),-150) ;
+
+	// How it handles null pointers and empty trees. //
+	bst *my_tree2 = NULL;
+	WVPASSEQ(bst_find_min(my_tree2),0) ;
+	my_tree2 = bst_create();
+	WVPASSEQ(bst_find_min(my_tree2),0) ;
+	bst_insert(my_tree2,1000) ;
+	WVPASSEQ(bst_find_min(my_tree2),1000) ;
+
+	bst_destroy(my_tree);
+	bst_destroy(my_tree2);
+}
+
+WVTEST_MAIN("binary search tree tests - Finding the max")
+{
+	bst *my_tree = NULL;
+	my_tree = bst_create();
+	bst_insert(my_tree, 7);
+	bst_insert(my_tree, 2);
+	bst_insert(my_tree, 11);
+	bst_insert(my_tree, 9);
+	bst_insert(my_tree, 1);
+	WVPASSEQ(bst_find_max(my_tree),11) ;
+
+	bst_insert(my_tree, -5);
+	bst_insert(my_tree, 1000);
+	bst_insert(my_tree, 10);
+	bst_insert(my_tree, -150);
+	WVPASSEQ(bst_find_max(my_tree),1000) ;
+
+	// How it handles null pointers and empty trees. //
+	bst *my_tree2 = NULL;
+	WVPASSEQ(bst_find_max(my_tree2),0) ;
+	my_tree2 = bst_create();
+	WVPASSEQ(bst_find_max(my_tree2),0) ;
+	bst_insert(my_tree2,1000) ;
+	WVPASSEQ(bst_find_max(my_tree2),1000) ;
+
+	bst_destroy(my_tree);
+	bst_destroy(my_tree2);
+}
+
+
 
 WVTEST_MAIN("binary search tree tests - performance of search after randomly ordered insert")
 {

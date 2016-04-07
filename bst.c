@@ -428,6 +428,7 @@ int bst_remove_recur(struct bstnode_s * node, int data) {
 				struct bstnode_s * temp = node->right ;
 				node->right = node->right->right ;
 				free(temp) ;
+				return SUCCESS ;
 			} 
 			return returnState ;
 		}
@@ -445,6 +446,7 @@ int bst_remove_recur(struct bstnode_s * node, int data) {
 				struct bstnode_s * temp = node->left ;
 				node->left = node->left->left ;
 				free(temp) ;
+				return SUCCESS ;
 			} 
 			return returnState ;
 		}
@@ -459,13 +461,9 @@ int bst_remove_recur(struct bstnode_s * node, int data) {
 				return ONE_CHILD ;
 			}
 		} else if (node->right == NULL) {
-			if (node->left == NULL) {
-				return NO_CHILDREN ;
-			} else {
 				return ONE_CHILD ;
-			}
 		} else {
-			int newVal = bst_find_min_recur(node) ;
+			int newVal = bst_find_min_recur(node->right) ;
 			node->data = newVal ;
 			bst_remove_recur(node->right, newVal) ;
 			return SUCCESS ;
@@ -488,12 +486,37 @@ int bst_remove_recur(struct bstnode_s * node, int data) {
 int bst_remove(bst * tree, int data) {
 	if (tree != NULL) {
 		if (tree->root != NULL) {
-			return bst_remove_recur(tree->root, data) ;
+			// Reduce tree size if remove sucessful. //
+			int returnVal = bst_remove_recur(tree->root, data) ;
+			if (returnVal == SUCCESS) {
+				--tree->size ;
+				return SUCCESS ;
+			} else if (returnVal == ONE_CHILD) {
+				if (tree->root->left != NULL) {
+					tree->root->data = tree->root->left->data ;
+					free(tree->root->left) ;
+					tree->root->left = NULL ;
+					return SUCCESS ;
+				} else {
+					tree->root->data = tree->root->right->data ;
+					free(tree->root->right) ;
+					tree->root->right = NULL ;
+					return SUCCESS ;
+				}
+			} else if (returnVal == NO_CHILDREN) {
+				// Delete root if only one element. //
+				free(tree->root) ;
+				--tree->size ;
+				tree->root = NULL ;
+				return SUCCESS ;
+			} else {
+				return FAILURE ;
+			}
 		} else {
-			return 0 ;
+			return FAILURE ;
 		}
 	} else {
-		return 0 ;
+		return FAILURE ;
 	}
 }		/* -----  end of function bst_remove  ----- */
 
