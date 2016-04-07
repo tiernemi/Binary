@@ -326,9 +326,9 @@ void bst_display(bst *my_tree) {
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  bst_find_min_recur
- *    Arguments:  
- *      Returns:  
- *  Description:  
+ *    Arguments:  struct bstnode_s * node - Node to check for min.
+ *      Returns:  Minimum value.
+ *  Description:  Recursively searchs tree for minimum value.
  * =====================================================================================
  */
 
@@ -363,9 +363,9 @@ int bst_find_min(bst * tree) {
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  bst_find_max_recur
- *    Arguments:  
- *      Returns:  
- *  Description:  
+ *    Arguments:  struct bstnode_s * node - Node to check for max.
+ *      Returns:  Maximum value.
+ *  Description:  Recursively searchs tree for maximum value.
  * =====================================================================================
  */
 
@@ -380,7 +380,7 @@ int bst_find_max_recur(struct bstnode_s * node) {
  * ===  FUNCTION  ======================================================================
  *         Name:  bst_find_max
  *    Arguments:  bst * tree - The tree of which we're finding the maximum.
- *      Returns:  Minimum value present in binary tree. Default return value of 0.
+ *      Returns:  Maximum value present in binary tree. Default return value of 0.
  *  Description:  Finds the maximum value present in the tree.
  * =====================================================================================
  */
@@ -407,9 +407,12 @@ enum {
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  bst_remove_recur
- *    Arguments:  
- *      Returns:  
- *  Description:  
+ *    Arguments:  struct bstnode_s * node - Node to check for removal.
+ *                int data - Data to remove.
+ *      Returns:  Integer representing removal event. 0 if failure.
+ *  Description:  Traverses the tree until the function finds the data to be removed.
+ *                Depending on the number of children the node has the function performs
+ *                slightly different removes.
  * =====================================================================================
  */
 
