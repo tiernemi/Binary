@@ -152,7 +152,7 @@ int bst_insert_recursive(struct bstnode_s *node, int data) {
 		}
 	} else if (data < node->data) {
 		if (node->left != NULL) { 
-			return bst_insert_recursive(node->right,data) ; // Go right
+			return bst_insert_recursive(node->left,data) ; // Go right
 		} else {
 			if (! (node->left = (struct bstnode_s *) malloc(sizeof(struct bstnode_s)))) {
 				return 0 ;

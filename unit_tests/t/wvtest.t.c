@@ -3,7 +3,7 @@
 
 /* EDIT HERE: add your code include(s) */
 #include "../bst.h"
-
+#include "stdio.h"
 
 /* EDIT HERE: write your tests */
 #define N_TESTS 10000
@@ -27,6 +27,7 @@ WVTEST_MAIN("binary search tree tests - performance of search after randomly ord
 
 	int i;
 	for (i=0; i<N_TESTS; i++) {
+		printf("hi\n");
 		int k = (int)(N_TESTS * drand48());
 		bst_insert(my_tree, k);
 
