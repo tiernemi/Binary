@@ -417,8 +417,10 @@ enum {
  */
 
 int bst_remove_recur(struct bstnode_s * node, int data) {
+	// Go right
 	if (data > node->data) {
 		if (node->right != NULL) {
+			// Remove behaviour based on state of child node. 
 			int returnState = bst_remove_recur(node->right,data) ;
 			if (returnState == NO_CHILDREN) {
 				free(node->right) ;
@@ -439,8 +441,11 @@ int bst_remove_recur(struct bstnode_s * node, int data) {
 		else {
 			return FAILURE ;
 		}
-	} else if (data < node->data) {
+	} 
+	// Go left.
+	else if (data < node->data) {
 		if (node->left != NULL) {
+			// Remove behaviour based on state of child node. 
 			int returnState = bst_remove_recur(node->left,data) ;
 			if (returnState == NO_CHILDREN) {
 				free(node->left) ;
@@ -461,7 +466,9 @@ int bst_remove_recur(struct bstnode_s * node, int data) {
 		else {
 			return FAILURE ;
 		}
-	} else {
+	} 
+	// Data found.
+	else {
 		if (node->left == NULL) {
 			if (node->right == NULL) {
 				return NO_CHILDREN ;
@@ -470,9 +477,12 @@ int bst_remove_recur(struct bstnode_s * node, int data) {
 			}
 		} else if (node->right == NULL) {
 				return ONE_CHILD ;
-		} else {
+		} 
+		// Has two children.
+		else {
 			int newVal = bst_find_min_recur(node->right) ;
 			node->data = newVal ;
+			// Handles case if right node has no children.
 			if (bst_remove_recur(node->right, newVal) == NO_CHILDREN) {
 				free(node->right) ;
 				node->right = NULL ;

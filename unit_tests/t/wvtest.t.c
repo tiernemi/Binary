@@ -63,6 +63,11 @@ WVTEST_MAIN("binary search tree tests - Testing remove functionality")
 		WVPASSEQ(bst_remove(my_tree,i),1) ;
 	}
 
+	bst_destroy(my_tree) ;	
+	my_tree = bst_create() ;
+	WVPASSEQ(bst_remove(my_tree, 7),0) ;
+	bst_insert(my_tree, 7);
+	WVPASSEQ(bst_remove(my_tree, 7),1) ;
 
 
 	bst_destroy(my_tree);

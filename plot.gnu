@@ -1,4 +1,3 @@
-
 set title "Plot Of Search Duration Vs Binary Tree Size For Ordered And Random Insert Regimes"
 set xlabel "Tree Size"
 set ylabel "Duration (ms)"
